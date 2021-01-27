@@ -33,7 +33,7 @@ public class OnfidoModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     private static final String E_ACTIVITY_DOES_NOT_EXIST = "E_ACTIVITY_DOES_NOT_EXIST";
-    private static final String E_FAILED_TO_SHOW_ONFIDO = "E_FAILED_TO_SHOW_ONFIDO";
+    private static final String E_FAILED_TO_SHOW_ONFIDO = "test";
     private final Onfido client;
     private Callback mSuccessCallback;
     private Callback mErrorCallback;
@@ -76,6 +76,7 @@ public class OnfidoModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startSDK(String type, String token, String applicantId, String countryCode, Callback successCallback, Callback errorCallback) {
 
+        String params = " type: " + type + " - " +" token: " + token + " - "+" applicantId: " + applicantId + " - "+" countryCode: " + countryCode + " - ";
         Activity currentActivity = getCurrentActivity();
         mSuccessCallback = successCallback;
         mErrorCallback = errorCallback;
@@ -100,7 +101,7 @@ public class OnfidoModule extends ReactContextBaseJavaModule {
                         .withLocale(new Locale("es", "ES"))
                         .withCustomFlow(flowStepsWithOptions)
                         .build();
-            } else if(type == "selfie") {
+            } else if(type.equals("selfie")) {
                 final FlowStep[] flowStepsWithOptions = new FlowStep[]{
                         new FaceCaptureStep(FaceCaptureVariant.PHOTO),
                 };
@@ -124,7 +125,7 @@ public class OnfidoModule extends ReactContextBaseJavaModule {
             client.startActivityForResult(currentActivity, 1, onfidoConfig);
         }
         catch (Exception e) {
-            mErrorCallback.invoke(E_FAILED_TO_SHOW_ONFIDO);
+            mErrorCallback.invoke(params);
             mErrorCallback = null;
         }
     }
